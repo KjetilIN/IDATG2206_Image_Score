@@ -48,7 +48,7 @@ end
 
 %% Sharpness 
 
-function sharpnessDif = sharpnessRatio(originalImage, secondaryImage)
+function sharpness = sharpnessRatio(originalImage, secondaryImage)
     % Sharpness is a subjective measure of the clarity and detail in an image. 
     % However, there are some objective measures that can be used to estimate the sharpness of an image. 
     % One such measure is the sharpness ratio, which is the ratio of the high-frequency energy (HFE) to the low-frequency energy (LFE) in the image.
@@ -76,5 +76,5 @@ function sharpnessDif = sharpnessRatio(originalImage, secondaryImage)
     sr1 = hfe1/lfe1;
     sr2 = hfe2/lfe2;
     
-    sharpnessDif = sr2/sr1;
+    sharpness = sr2/sr1;
 end
