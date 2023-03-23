@@ -7,8 +7,7 @@ function image_score(img1_url, img2_url)
     subplot(1,2,1), imshow(img1), title("Image: " + img1_url);
     subplot(1,2,2), imshow(img2), title("Image: " + img2_url);
 
-    qualityIndex = calculateNoise(img1);
-
+    quality
     
 end
 
@@ -18,9 +17,9 @@ end
 % Calculate the noise diffrence for each image by using the signal to noise
 % ratio. 
 
-function snr = calculateNoise(givenImage)
+function snr = calculateNoise(img)
     % Image turned into grayscale
-    img = im2gray(givenImage);
+    img = im2gray(img);
 
     % Calculate each of the variables 
     img = double(img(:));
