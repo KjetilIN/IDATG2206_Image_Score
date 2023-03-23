@@ -4,7 +4,7 @@
 function score = image_score(orginal_image_url, secondary_image_url)
     orginal = imread(orginal_image_url);
     secondary = imread(secondary_image_url);
-    score = calculateNoise(orginal);
+    score = calculateNoise(secondary)/calculateNoise(orginal);
 
     
 end
