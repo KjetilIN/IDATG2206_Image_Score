@@ -1,13 +1,14 @@
 % The main function that should show the score diffrence provided the image
 % paths
-function image_score(img1_url, img2_url)
+function score = image_score(orginal_image_url, secoundary_image_url)
     img1 = imread(img1_url);
     img2 = imread(img2_url);
     
     subplot(1,2,1), imshow(img1), title("Image: " + img1_url);
     subplot(1,2,2), imshow(img2), title("Image: " + img2_url);
 
-    quality
+    score = calculateNoise(img1);
+
     
 end
 
@@ -17,9 +18,9 @@ end
 % Calculate the noise diffrence for each image by using the signal to noise
 % ratio. 
 
-function snr = calculateNoise(img)
+function snr = calculateNoise(givenImage)
     % Image turned into grayscale
-    img = im2gray(img);
+    img = im2gray(givenImage);
 
     % Calculate each of the variables 
     img = double(img(:));
