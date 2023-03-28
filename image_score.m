@@ -6,8 +6,7 @@ function score = image_score(orginal_image_url, secondary_image_url)
     secondary = imread(secondary_image_url);
     score = calculateNoise(secondary)/calculateNoise(orginal) + ...
         calculateResolutionDifference(secondary, orginal) + ...
-        sharpnessRatio(orginal,secondary)+ ...
-        image_stats(secondary)/image_stats(original);
+        sharpnessRatio(orginal,secondary);
     
 end
 
