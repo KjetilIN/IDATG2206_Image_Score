@@ -6,8 +6,8 @@ function score = image_score(orginal_image_url, secondary_image_url)
     secondary = imread(secondary_image_url);
     score = calculateNoise(secondary)/calculateNoise(orginal) + ...
         calculateResolutionDifference(secondary, orginal) + ...
-        sharpnessRatio(orginal,secondary);
-
+        sharpnessRatio(orginal,secondary)+ ...
+        image_stats(secondary)/image_stats(original);
     
 end
 
@@ -77,4 +77,30 @@ function sharpness = sharpnessRatio(originalImage, secondaryImage)
     sr2 = hfe2/lfe2;
     
     sharpness = sr2/sr1;
+end
+
+
+%% Stat function
+
+function stat_val = image_stats(img)
+    % Convert the image to a double precision array
+    img = double(img);
+    
+    % Compute the sum of pixel values
+    sum_val = sum(img(:));
+    
+    % Count the number of pixels in the image
+    num_pixels = numel(img);
+    
+    % Compute the mean value of the pixel values
+    mean_val = sum_val / num_pixels;
+    
+    % Compute the sum of squared differences from the mean
+    diff_sum = sum((img - mean_val).^2);
+    
+    % Compute the unbiased estimate of the standard deviation
+    std_val = sqrt(diff_sum / (num_pixels - 1));
+
+    % Sum the estimate of standard deviation and mean pixel value
+    stat_val = std_val + mean_val;
 end
