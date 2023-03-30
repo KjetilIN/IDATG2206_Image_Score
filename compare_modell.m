@@ -1,7 +1,7 @@
 %% This script is used for comparing the models to eachother:
 
 original_path_prefix = "Images/Original/";
-method = "JPEG2000";
+method = "Poisson";
 reprod_path_prefix = "Images/Reproduction/"+ method + "/";
 
 Quality_index = [];
