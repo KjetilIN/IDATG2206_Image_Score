@@ -2,14 +2,26 @@
 % The main function that should show the score diffrence provided the image
 % paths
 function score = image_score(orginal_image_url, secondary_image_url)
+    %Reading the images provided
     orginal = imread(orginal_image_url);
     secondary = imread(secondary_image_url);
-    score = calculateNoise(secondary)/calculateNoise(orginal) + ...
-        calculateResolutionDifference(secondary, orginal) + ...
-        sharpnessRatio(orginal,secondary) + ...
-        image_stats(secondary) / image_stats(orginal) ;
-
-    score = nthroot(score,4);
+    
+    % Assigning each constant
+    k_1 = 1; % Noise constant
+    k_2 = 1; % Resoltution constant
+    k_3 = 1; % Sharpess constant
+    k_4 = 1; % Statistics constants
+    k_5 = 1; % Color simalarity 
+    
+    %Compute the sum of each factor multiplied with each of their constant
+    score = k_1 * calculateNoise(secondary)/calculateNoise(orginal) + ...
+        k_2 * calculateResolutionDifference(secondary, orginal) + ...
+        k_3 * sharpnessRatio(orginal,secondary) + ...
+        k_4 * image_stats(secondary) / image_stats(orginal)+ ...
+        k_5 * get_color_similarity(orginal, secondary);
+    
+    %Take the 5th root of score
+    score = nthroot(score,5);
 end
 
 %% Noise
@@ -101,4 +113,40 @@ function stat_val = image_stats(img)
     
     % Sum the estimate of standard deviation and mean pixel value
     stat_val = std_val + mean_val;
+end
+
+
+
+%% Color
+
+function color_ratio = get_color_ratio(img)
+    % Convert the image to a double precision array
+    img = double(img);
+    
+    % Compute the sum of pixel values along each color channel
+    red_sum = sum(img(:,:,1), 'all');
+    green_sum = sum(img(:,:,2), 'all');
+    blue_sum = sum(img(:,:,3), 'all');
+    
+    % Compute the total sum of pixel values
+    total_sum = red_sum + green_sum + blue_sum;
+    
+    % Compute the ratio of pixels in each color channel
+    red_ratio = red_sum / total_sum;
+    green_ratio = green_sum / total_sum;
+    blue_ratio = blue_sum / total_sum;
+    
+    % Return the color ratio as a vector
+    color_ratio = [red_ratio, green_ratio, blue_ratio];
+end
+
+function color_similarity = get_color_similarity(original, distorted)
+    % Compute the color ratio for the original image
+    original_ratio = get_color_ratio(original);
+    
+    % Compute the color ratio for the distorted image
+    distorted_ratio = get_color_ratio(distorted);
+    
+    % Compute the color similarity as the percentage of difference
+    color_similarity = 1 - norm(original_ratio - distorted_ratio) / sqrt(numel(original_ratio));
 end
