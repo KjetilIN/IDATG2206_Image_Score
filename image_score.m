@@ -23,7 +23,7 @@ function score = image_score(orginal_image_url, secondary_image_url)
         statistics_constant * image_stats(secondary) / image_stats(orginal)+ ...
         color_similarity_constant * get_color_similarity(orginal, secondary);
     
-    %Take the 5th root of score
+    %Take the 4th root of score
     score = nthroot(score,4)- adjustment_constant;
 end
 
@@ -58,7 +58,6 @@ function diff = calculateResolutionDifference(givenImage, givenImage2)
     
     % Converts the scalar diff to a double precision number
     diff = double(diff);
-
 end
 
 
