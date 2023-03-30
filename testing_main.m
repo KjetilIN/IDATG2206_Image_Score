@@ -36,4 +36,4 @@ ylabel('Score');
 title("Score Based on Each type of picture");
 
 % Plot each array in the same plot
-legend("Gaussian", "JPEG2000", "Poisson", "SSIM");
+legend("Gaussian", "JPEG2000", "Poisson", "SGCK GAMUT MAPPING");
