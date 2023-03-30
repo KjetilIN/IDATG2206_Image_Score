@@ -1,41 +1,50 @@
-%% Compare out index to the SSIM diffrent distortions 
+%% Compare our image quality score to the SSIM score for different distortion methods
 
-%Original path prefix
+% Set the path prefix for the original images
 original_path_prefix = "Images/Original/";
 
-%Each method
+% Define the distortion methods to evaluate
 methods = ["JPEG2000", "Gaussian", "Poisson", "SGCK_GAMUT_MAPPING"];
 
+% Create a figure to plot the results
 figure();
 
-%For each method 
-for j=1:length(methods)
+% For each distortion method, plot the comparison of image quality score to SSIM score
+for j = 1:length(methods)
     method = methods(j);
-    reprod_path_prefix = "Images/Reproduction/" + method + "/";
-
-    %Empty list of scores 
-    Quality_index = [];
-    SSIM_score = [];
     
-    %For each of the images, add the score of each image to the lists
-    for i=1:10
+    % Set the path prefix for the reproduced images for the current method
+    reprod_path_prefix = "Images/Reproduction/" + method + "/";
+    
+    % Create empty lists to store the quality scores and SSIM scores for each image
+    quality_scores = [];
+    ssim_scores = [];
+    
+    % For each image, calculate the quality score and SSIM score and add them to the lists
+    for i = 1:10
         original_path = original_path_prefix + i + ".bmp";
         reprod_path = reprod_path_prefix + i + ".bmp";
-        Quality_index = [Quality_index, image_score(original_path,reprod_path)];
-        SSIM_score = [SSIM_score, ssim(imread(reprod_path),imread(original_path))];
+        
+        % Calculate the quality score using our custom metric
+        quality_score = image_score(original_path, reprod_path);
+        quality_scores = [quality_scores, quality_score];
+        
+        % Calculate the SSIM score using the built-in function
+        ssim_score = ssim(imread(reprod_path), imread(original_path));
+        ssim_scores = [ssim_scores, ssim_score];
     end
-
-    % Compare our quality score to the SSIM score, and add it to the
-    % subplot
-    subplot(length(methods),1,j);
+    
+    % Add a subplot for the current method and plot the quality scores and SSIM scores
+    subplot(length(methods), 1, j);
     hold on;
-    plot(SSIM_score)
-    plot(Quality_index)
+    plot(ssim_scores)
+    plot(quality_scores)
     hold off;
+    
+    % Add labels and a title to the subplot
     xlabel("Images");
     ylabel("Score");
-    title("Compare Scores to SSIM for " + method + " Images");
-    legend("SSIM", "Our Quality Index");
-
-    
+    title("Comparison of SSIM Score and Our Quality Index for " + method + " Images");
+    legend("SSIM Score", "Our Quality Index");
 end
+
