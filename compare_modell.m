@@ -10,8 +10,8 @@ SSI_score= [];
 for i=1:5
     original_path = original_path_prefix + i + ".bmp";
     reprod_path = reprod_path_prefix + i + ".bmp";
-    Quality_index = [Quality_index, image_score(original_path,reprod_path)]
-    SSI_score = [SSI_score, ssim(imread(reprod_path),imread(original_path))]
+    Quality_index = [Quality_index, image_score(original_path,reprod_path)];
+    SSI_score = [SSI_score, ssim(imread(reprod_path),imread(original_path))];
 end
 
 %Plotting the result:
