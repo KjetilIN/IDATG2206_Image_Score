@@ -7,20 +7,23 @@ function score = image_score(orginal_image_url, secondary_image_url)
     secondary = imread(secondary_image_url);
     
     % Assigning each constant
-    k_1 = 1; % Noise constant
-    k_2 = 1; % Resoltution constant
-    k_3 = 1; % Sharpess constant
-    k_4 = 1; % Statistics constants
-    k_5 = c
+    noise_constant = 0.5;
+    resolution_constant = 0.25; 
+    sharpness_constant = 1.4; 
+    statistics_constant = 0.25; 
+    color_similarity_constant = 0.4; 
 
-
-    score = k_1 * calculateNoise(secondary)/calculateNoise(orginal) + ...
-        k_2 * calculateResolutionDifference(secondary, orginal) + ...
-        k_3 * sharpnessRatio(orginal,secondary) + ...
-        k_4 * image_stats(secondary) / image_stats(orginal)+ ...
-        k_5 * get_color_similarity(orginal, secondary);
-
-    score = nthroot(score,4);
+    Delta = 0.23; % Adjustment constant 
+    
+    %Compute the sum of each factor multiplied with each of their constant
+    score = noise_constant * calculateNoise(secondary)/calculateNoise(orginal) + ...
+        resolution_constant * calculateResolutionDifference(secondary, orginal) + ...
+        sharpness_constant * sharpnessRatio(orginal,secondary) + ...
+        statistics_constant * image_stats(secondary) / image_stats(orginal)+ ...
+        color_similarity_constant * get_color_similarity(orginal, secondary);
+    
+    %Take the 5th root of score
+    score = nthroot(score,4)- Delta;
 end
 
 %% Noise
