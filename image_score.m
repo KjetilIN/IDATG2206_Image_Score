@@ -61,37 +61,45 @@ function diff = calculateResolutionDifference(givenImage, givenImage2)
 end
 
 
-%% Sharpness 
 
+%% Sharpness 
 function sharpness = sharpnessRatio(originalImage, secondaryImage)
     % Sharpness is a subjective measure of the clarity and detail in an image. 
     % However, there are some objective measures that can be used to estimate the sharpness of an image. 
     % One such measure is the sharpness ratio, which is the ratio of the high-frequency energy (HFE) to the low-frequency energy (LFE) in the image.
-    
-    
+   
     % Convert the images to grayscale
-    image1Grey = im2gray(originalImage);
-    image2Grey = im2gray(secondaryImage);
+    image1Grey = rgb2gray(originalImage);
+    image2Grey = rgb2gray(secondaryImage);
     
     % Calculate the size of the images
-    [m,n] = size(image1Grey);
+    
+    % Calculate the size of the images
+    [m, n] = size(image1Grey);
     
     % Define the Laplacian filter
     lap_filter = [0 1 0; 1 -4 1; 0 1 0];
     
     % Calculate the high-frequency energy for both images
-    hfe1 = sum(sum(abs(filter2(lap_filter, image1Grey))));
-    hfe2 = sum(sum(abs(filter2(lap_filter, image2Grey))));
+    padded1 = padarray(image1Grey, [1, 1], 'replicate');
+    padded2 = padarray(image2Grey, [1, 1], 'replicate');
+    hfe1 = sum(abs(conv2(padded1, lap_filter, 'valid')), 'all');
+    hfe2 = sum(abs(conv2(padded2, lap_filter, 'valid')), 'all');
     
     % Calculate the low-frequency energy for both images
-    lfe1 = sum(sum(image1Grey.^2))/(m*n);
-    lfe2 = sum(sum(image2Grey.^2))/(m*n);
+    kernel = ones(5, 5)/25;
+    blurred1 = conv2(double(image1Grey), kernel, 'same');
+    blurred2 = conv2(double(image2Grey), kernel, 'same');
+    lfe1 = sum(blurred1(:).^2)/(m*n);
+    lfe2 = sum(blurred2(:).^2)/(m*n);
     
     % Calculate the sharpness ratio for both images
     sr1 = hfe1/lfe1;
     sr2 = hfe2/lfe2;
     
+    % Calculate the ratio of sharpness
     sharpness = sr2/sr1;
+
 end
 
 
