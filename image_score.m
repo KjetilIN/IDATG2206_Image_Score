@@ -7,23 +7,24 @@ function score = image_score(orginal_image_url, secondary_image_url)
     secondary = imread(secondary_image_url);
     
     % Assigning each constant
-    k_1 = 0.5; % Noise constant
-    k_2 = 0.25; % Resoltution constant
-    k_3 = 1.4; % Sharpess constant
-    k_4 = 0.25; % Statistics constants
-    k_5 = 0.4; % Color simalarity 
+    noise_constant = 0.5;
+    resolution_constant = 0.25; 
+    sharpness_constant = 1.4; 
+    statistics_constant = 0.25; 
+    color_similarity_constant = 0.4; 
 
-    Delta = 0.23; % Adjustment constant 
+    % Assigning adjustment constant, delta
+    adjustment_constant = 0.23; 
     
     %Compute the sum of each factor multiplied with each of their constant
-    score = k_1 * calculateNoise(secondary)/calculateNoise(orginal) + ...
-        k_2 * calculateResolutionDifference(secondary, orginal) + ...
-        k_3 * sharpnessRatio(orginal,secondary) + ...
-        k_4 * image_stats(secondary) / image_stats(orginal)+ ...
-        k_5 * get_color_similarity(orginal, secondary);
+    score = noise_constant * calculateNoise(secondary)/calculateNoise(orginal) + ...
+        resolution_constant * calculateResolutionDifference(secondary, orginal) + ...
+        sharpness_constant * sharpnessRatio(orginal,secondary) + ...
+        statistics_constant * image_stats(secondary) / image_stats(orginal)+ ...
+        color_similarity_constant * get_color_similarity(orginal, secondary);
     
-    %Take the 5th root of score
-    score = nthroot(score,4)- Delta;
+    %Take the 4th root of score
+    score = nthroot(score,4)- adjustment_constant;
 end
 
 %% Noise
@@ -57,7 +58,6 @@ function diff = calculateResolutionDifference(givenImage, givenImage2)
     
     % Converts the scalar diff to a double precision number
     diff = double(diff);
-
 end
 
 

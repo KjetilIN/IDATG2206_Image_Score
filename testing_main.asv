@@ -1,6 +1,6 @@
 %% Testing of diffrent images
 % Define the paths to the different image sets
-paths = {"Gaussian", "JPEG2000", "Poisson", "SGCK_GAMUT_MAPPING"};
+paths = {"Gaussian", "JPEG2000", "Poisson"};
 
 % Create an empty list to store the final scores for each image set
 final_scores = cell(1, length(paths));
@@ -34,6 +34,4 @@ end
 xlabel('Image number');
 ylabel('Score');
 title("Score Based on Each type of picture");
-
-% Plot each array in the same plot
-legend("Gaussian", "JPEG2000", "Poisson", "SGCK GAMUT MAPPING");
+legend("Gaussian", "JPEG2000", "Poisson", "SSMI");% Plot each array in the same plot
