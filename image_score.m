@@ -1,6 +1,5 @@
 %% Calculate Score
-% The main function that should show the score diffrence provided the image
-% paths
+% The main function that should show the score difference provided the image paths
 function score = image_score(original_image_url, secondary_image_url)
     %Reading the images provided
     original = imread(original_image_url);
@@ -30,8 +29,7 @@ function score = image_score(original_image_url, secondary_image_url)
 end
 
 %% Noise
-% Calculate the noise diffrence for each image by using the signal to noise
-% ratio. 
+% Calculate the noise difference for each image by using the signal to noise ratio. 
 
 function snr = calculateNoise(givenImage)
     % Image turned into grayscale
@@ -63,6 +61,7 @@ function diff = calculateResolutionDifference(givenImage, givenImage2)
 end
 
 %% Sharpness 
+% Calculates the sharpness ratio between two images.
 function sharpness = sharpnessRatio(originalImage, secondaryImage)
    
     % Convert the images to grayscale
@@ -100,6 +99,7 @@ end
 
 
 %% Stat function
+% Computes the sum, mean, and standard deviation of a given image
 
 function stat_val = image_stats(img)
     % Convert the image to a double precision array
@@ -122,6 +122,7 @@ function stat_val = image_stats(img)
 end
 
 %% Edge function
+% Calculates the total number of edges using the canny edge detection method
 
 function edges = get_total_edges(img)
 
@@ -139,6 +140,7 @@ function edges = get_total_edges(img)
     end
 
 %% Color
+% Computes the ratio of pixels in each color channel of an image
 
 function color_ratio = get_color_ratio(img)
     % Convert the image to a double precision array
@@ -160,6 +162,8 @@ function color_ratio = get_color_ratio(img)
     % Return the color ratio as a vector
     color_ratio = [red_ratio, green_ratio, blue_ratio];
 end
+
+% Computes the color similarity between two images.
 
 function color_similarity = get_color_similarity(original, distorted)
     % Compute the color ratio for the original image
