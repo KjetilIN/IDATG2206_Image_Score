@@ -1,9 +1,9 @@
 %% Calculate Score
 % The main function that should show the score diffrence provided the image
 % paths
-function score = image_score(orginal_image_url, secondary_image_url)
+function score = image_score(original_image_url, secondary_image_url)
     %Reading the images provided
-    orginal = imread(orginal_image_url);
+    original = imread(original_image_url);
     secondary = imread(secondary_image_url);
     
     % Assigning each constant
@@ -12,16 +12,18 @@ function score = image_score(orginal_image_url, secondary_image_url)
     sharpness_constant = 1.4; 
     statistics_constant = 0.25; 
     color_similarity_constant = 0.4; 
+    %edge_constant = 0.0;
 
     % Assigning adjustment constant, delta
     adjustment_constant = 0.26; 
     
     %Compute the sum of each factor multiplied with each of their constant
-    score = noise_constant * calculateNoise(secondary)/calculateNoise(orginal) + ...
-        resolution_constant * calculateResolutionDifference(secondary, orginal) + ...
-        sharpness_constant * sharpnessRatio(orginal,secondary) + ...
-        statistics_constant * image_stats(secondary) / image_stats(orginal)+ ...
-        color_similarity_constant * get_color_similarity(orginal, secondary);
+    score = noise_constant * calculateNoise(secondary)/calculateNoise(original) + ...
+        resolution_constant * calculateResolutionDifference(secondary, original) + ...
+        sharpness_constant * sharpnessRatio(original,secondary) + ...
+        statistics_constant * image_stats(secondary) / image_stats(original)+ ...
+        color_similarity_constant * get_color_similarity(original, secondary);
+        %edge_constant * %abs(get_total_edges(secondary)-get_total_edges(orginal))/(get_total_edges(secondary)+get_total_edges(orginal));
     
     %Take the 4th root of score
     score = nthroot(score,4)- adjustment_constant;
@@ -62,9 +64,6 @@ end
 
 %% Sharpness 
 function sharpness = sharpnessRatio(originalImage, secondaryImage)
-    % Sharpness is a subjective measure of the clarity and detail in an image. 
-    % However, there are some objective measures that can be used to estimate the sharpness of an image. 
-    % One such measure is the sharpness ratio, which is the ratio of the high-frequency energy (HFE) to the low-frequency energy (LFE) in the image.
    
     % Convert the images to grayscale
     image1Grey = rgb2gray(originalImage);
@@ -122,7 +121,22 @@ function stat_val = image_stats(img)
     stat_val = std_val + mean_val;
 end
 
+%% Edge function
 
+function edges = get_total_edges(img)
+
+    % Convert images to grayscale
+    img1_gray = rgb2gray(img);
+    
+    % Perform edge detection using Canny method
+    edge1 = edge(img1_gray, 'Canny');
+    
+    % Calculate the difference in the number of detected edges
+    calculateEdges = sum(edge1(:));
+    
+    % Use the edge difference to calculate the image score
+    edges = calculateEdges;
+    end
 
 %% Color
 
