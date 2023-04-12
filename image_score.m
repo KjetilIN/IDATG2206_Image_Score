@@ -11,7 +11,7 @@ function score = image_score(original_image_url, secondary_image_url)
     sharpness_constant = 1.4; 
     statistics_constant = 0.25; 
     color_similarity_constant = 0.4; 
-    %edge_constant = 0.0;
+    edge_constant = 0.0;
 
     % Assigning adjustment constant, delta
     adjustment_constant = 0.26; 
@@ -22,7 +22,7 @@ function score = image_score(original_image_url, secondary_image_url)
         sharpness_constant * sharpnessRatio(original,secondary) + ...
         statistics_constant * image_stats(secondary) / image_stats(original)+ ...
         color_similarity_constant * get_color_similarity(original, secondary);
-        %edge_constant * %abs(get_total_edges(secondary)-get_total_edges(orginal))/(get_total_edges(secondary)+get_total_edges(orginal));
+        edge_constant * abs(get_total_edges(secondary)-get_total_edges(original))/(get_total_edges(secondary)+get_total_edges(original));
     
     %Take the 4th root of score
     score = nthroot(score,4)- adjustment_constant;
@@ -132,11 +132,8 @@ function edges = get_total_edges(img)
     % Perform edge detection using Canny method
     edge1 = edge(img1_gray, 'Canny');
     
-    % Calculate the difference in the number of detected edges
-    calculateEdges = sum(edge1(:));
-    
     % Use the edge difference to calculate the image score
-    edges = calculateEdges;
+    edges = sum(edge1(:));
     end
 
 %% Color
