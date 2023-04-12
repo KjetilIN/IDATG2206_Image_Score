@@ -1,4 +1,6 @@
 %% Testing of diffrent images
+% A script for comparing scores of our model based on the distorion method
+
 % Define the paths to the different image sets
 paths = {"Gaussian", "JPEG2000", "Poisson", "SGCK_GAMUT_MAPPING"};
 

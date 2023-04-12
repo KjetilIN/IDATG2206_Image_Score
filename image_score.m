@@ -1,5 +1,8 @@
 %% Calculate Score
 % The main function that should show the score difference provided the image paths
+% The original image path is given first, then the secondary image url
+% referces the distorted image. 
+% See all functions used to calculate the image score in this file. 
 function score = image_score(original_image_url, secondary_image_url)
     %Reading the images provided
     original = imread(original_image_url);
@@ -24,7 +27,7 @@ function score = image_score(original_image_url, secondary_image_url)
         color_similarity_constant * get_color_similarity(original, secondary);
         edge_constant * abs(get_total_edges(secondary)-get_total_edges(original))/(get_total_edges(secondary)+get_total_edges(original));
     
-    %Take the 4th root of score
+    %Take the 4th root of score and adjust with delta 
     score = nthroot(score,4)- adjustment_constant;
 end
 

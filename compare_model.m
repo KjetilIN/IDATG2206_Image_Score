@@ -1,4 +1,5 @@
 %% Compare our image quality score to the SSIM score for different distortion methods
+% This script is for comparing to out model to the SSIM model
 
 % Set the path prefix for the original images
 original_path_prefix = "Images/Original/";
@@ -25,7 +26,8 @@ for j = 1:length(methods)
         original_path = original_path_prefix + i + ".bmp";
         reprod_path = reprod_path_prefix + i + ".bmp";
         
-        % Calculate the quality score using our custom metric
+        % Calculate the quality score using our custom metric and adding it
+        % 
         quality_score = image_score(original_path, reprod_path);
         quality_scores = [quality_scores, quality_score];
         
